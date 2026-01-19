@@ -3,12 +3,16 @@ import { generateState, generateCodeVerifier } from "arctic";
 import { google } from "../OAuth";
 import { prisma } from "../db";
 import type { Request, Response } from "express";
+import { verify, sign } from "jsonwebtoken";
+import type { GoogleUserInfo } from "../types";
+
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
 const router = Router()
 
 const sessions = new Map<string, string>(); // store verifier temporarily
 
-// 🌐 Step 1: Redirect user to Google
+//Redirect user to Google
 router.get("/google", (req: Request, res: Response) => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
@@ -25,20 +29,9 @@ router.get("/google", (req: Request, res: Response) => {
 });
 
 
-export interface GoogleUserInfo {
-  sub: string;
-  name: string;
-  given_name: string;
-  family_name: string;
-  picture: string;
-  email: string;
-  email_verified: boolean;
-  locale: string;
-}
 
 
-
-// 🔁 Step 2: Handle Google callback
+//Handle Google callback
 router.get("/google/callback", async (req, res) => {
   try {
     const { state, code } = req.query as Record<string, string>;
@@ -63,7 +56,7 @@ router.get("/google/callback", async (req, res) => {
 
     const { email, name } = userInfo as GoogleUserInfo;
 
-    // 🌱 Auto register if user does not exist
+    //Auto register if user does not exist
     let user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -76,9 +69,15 @@ router.get("/google/callback", async (req, res) => {
       });
     }
 
+    const token = sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" });
+
+    res.cookie("token", token,{
+        httpOnly: true,
+    });
+
     return res.json({
       message: "OAuth success",
-      user,
+      user
     });
   } catch (err) {
     console.error(err);

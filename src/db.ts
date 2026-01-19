@@ -8,6 +8,4 @@ const prisma = new PrismaClient({
   accelerateUrl: acc_url,
 }).$extends(withAccelerate())
 
-console.log("Prisma client initialized", acc_url);
-
 export { prisma }
