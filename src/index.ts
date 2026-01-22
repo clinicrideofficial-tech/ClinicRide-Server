@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import patientRoutes from './routes/Profile'
+import profileRoutes from './routes/Profile'
 import authRoutes from './routes/auth'
 import bookingRoutes from './routes/booking'
 import cookieParser from 'cookie-parser'
@@ -14,7 +14,7 @@ app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/patient', patientRoutes)
+app.use('/profile', profileRoutes)
 app.use('/auth', authRoutes)
 app.use('/booking', bookingRoutes)
 
