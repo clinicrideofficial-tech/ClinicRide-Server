@@ -45,10 +45,35 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
- * Model Assistant
+ * Model AuthAccount
  * 
  */
-export type Assistant = Prisma.AssistantModel
+export type AuthAccount = Prisma.AuthAccountModel
+/**
+ * Model Patient
+ * 
+ */
+export type Patient = Prisma.PatientModel
+/**
+ * Model Guardian
+ * 
+ */
+export type Guardian = Prisma.GuardianModel
+/**
+ * Model Doctor
+ * 
+ */
+export type Doctor = Prisma.DoctorModel
+/**
+ * Model Hospital
+ * 
+ */
+export type Hospital = Prisma.HospitalModel
+/**
+ * Model HospitalService
+ * 
+ */
+export type HospitalService = Prisma.HospitalServiceModel
 /**
  * Model Service
  * 

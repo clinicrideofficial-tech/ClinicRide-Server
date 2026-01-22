@@ -9,7 +9,12 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.ts'
-export type * from './models/Assistant.ts'
+export type * from './models/AuthAccount.ts'
+export type * from './models/Patient.ts'
+export type * from './models/Guardian.ts'
+export type * from './models/Doctor.ts'
+export type * from './models/Hospital.ts'
+export type * from './models/HospitalService.ts'
 export type * from './models/Service.ts'
 export type * from './models/Booking.ts'
 export type * from './models/BookingService.ts'

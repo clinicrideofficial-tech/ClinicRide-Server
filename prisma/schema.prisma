@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client"
@@ -15,58 +11,167 @@ datasource db {
   provider = "postgresql" 
 }
 
+//User
 model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String    @unique
-  phone     String?   
+  id            String   @id @default(uuid())
+  fullName      String
+  mobile        String?  @unique
+  email         String?  @unique
+  role          UserRole
 
-  bookings  Booking[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  createdAt DateTime  @default(now())
+  authAccounts  AuthAccount[]
+
+  patient       Patient?
+  guardian      Guardian?
+  doctor        Doctor?
 }
 
-model Assistant {
-  id         String    @id @default(uuid())
-  name       String
-  email      String    @unique
-  phone      String
-  gender     String
-  age        Int
-  education  String
-  experience String
-  rating     Float     @default(0)
+//AuthAccount
+model AuthAccount {
+  id             String   @id @default(uuid())
+  provider       AuthProvider
+  providerUserId String
+  userId         String
 
-  bookings   Booking[]
-  reviews    Review[]
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime  @default(now())
+  createdAt      DateTime @default(now())
+
+  @@unique([provider, providerUserId])
 }
+
+//Users-[Patient,Guardian,Doctor]
+model Patient {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+
+  age             Int
+  gender          String
+  emergencyPhone  String?
+  bookings        Booking[]
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+}
+
+
+model Guardian {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+
+  age             Int
+  gender          String
+  locality        String
+  preferredAreas  String[]
+  reviews         Review[]
+
+  verificationStatus VerificationStatus @default(PENDING)
+  bookings           Booking[]
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+}
+
+model Doctor {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  qualification String
+  experience    Int
+  hospitalName  String
+  city          String
+  hospitalId    String
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  hospital      Hospital @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+}
+
+//Hospital
+
+model Hospital {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  phone       String?
+  email       String?
+
+  address     String
+  city        String
+  state       String
+  country     String   @default("India")
+  pincode     String?
+
+  latitude    Float
+  longitude   Float
+
+  isActive    Boolean  @default(true)
+
+  doctors     Doctor[]
+  services    HospitalService[]
+  bookings    Booking[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([city])
+  @@index([latitude, longitude])
+}
+
+//Hospital-Service
+
+model HospitalService {
+  hospitalId String
+  serviceId  String
+
+  hospital   Hospital @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([hospitalId, serviceId])
+}
+
+
+
+//Service
 
 model Service {
   id        String           @id @default(uuid())
   name      String
   description String?
   createdAt DateTime         @default(now())
-
+  hospitals HospitalService[]
   bookings  BookingService[]   // <-- back relation added
 }
 
+
+
+//Booking
 model Booking {
   id           String        @id @default(uuid())
-  userId       String
-  assistantId  String
+  patientId    String
+  guardianId  String
+  hospitalId  String
   appointment  DateTime
   status       BookingStatus @default(PENDING)
 
-  user         User      @relation(fields: [userId], references: [id])
-  assistant    Assistant @relation(fields: [assistantId], references: [id])
+  patient      Patient   @relation(fields: [patientId], references: [id])
+  guardian     Guardian @relation(fields: [guardianId], references: [id])
+  hospital     Hospital @relation(fields: [hospitalId], references: [id])
+
   services     BookingService[]
   review       Review?
+
 
   createdAt    DateTime @default(now())
 }
 
+
+//Booking-Service
 model BookingService {
   bookingId String
   serviceId String
@@ -82,14 +187,36 @@ model Review {
   rating      Int
   comment     String?
   bookingId  String   @unique
-  assistantId String
+  guardianId String
 
   booking     Booking   @relation(fields: [bookingId], references: [id])
-  assistant   Assistant @relation(fields: [assistantId], references: [id])
+  guardian   Guardian @relation(fields: [guardianId], references: [id])
 }
 
+
+//Enums
 enum BookingStatus {
   PENDING
   CONFIRMED
   COMPLETED
 }
+
+enum AuthProvider {
+  MOBILE
+  GOOGLE
+}
+
+enum UserRole {
+  PATIENT
+  GUARDIAN
+  DOCTOR
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+
+

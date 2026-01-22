@@ -52,7 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Assistant: 'Assistant',
+  AuthAccount: 'AuthAccount',
+  Patient: 'Patient',
+  Guardian: 'Guardian',
+  Doctor: 'Doctor',
+  Hospital: 'Hospital',
+  HospitalService: 'HospitalService',
   Service: 'Service',
   Booking: 'Booking',
   BookingService: 'BookingService',
@@ -77,29 +82,95 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  fullName: 'fullName',
+  mobile: 'mobile',
   email: 'email',
-  phone: 'phone',
-  createdAt: 'createdAt'
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const AssistantScalarFieldEnum = {
+export const AuthAccountScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  gender: 'gender',
-  age: 'age',
-  education: 'education',
-  experience: 'experience',
-  rating: 'rating',
+  provider: 'provider',
+  providerUserId: 'providerUserId',
+  userId: 'userId',
   createdAt: 'createdAt'
 } as const
 
-export type AssistantScalarFieldEnum = (typeof AssistantScalarFieldEnum)[keyof typeof AssistantScalarFieldEnum]
+export type AuthAccountScalarFieldEnum = (typeof AuthAccountScalarFieldEnum)[keyof typeof AuthAccountScalarFieldEnum]
+
+
+export const PatientScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  age: 'age',
+  gender: 'gender',
+  emergencyPhone: 'emergencyPhone',
+  createdAt: 'createdAt'
+} as const
+
+export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
+
+
+export const GuardianScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  age: 'age',
+  gender: 'gender',
+  locality: 'locality',
+  preferredAreas: 'preferredAreas',
+  verificationStatus: 'verificationStatus',
+  createdAt: 'createdAt'
+} as const
+
+export type GuardianScalarFieldEnum = (typeof GuardianScalarFieldEnum)[keyof typeof GuardianScalarFieldEnum]
+
+
+export const DoctorScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  qualification: 'qualification',
+  experience: 'experience',
+  hospitalName: 'hospitalName',
+  city: 'city',
+  hospitalId: 'hospitalId',
+  createdAt: 'createdAt'
+} as const
+
+export type DoctorScalarFieldEnum = (typeof DoctorScalarFieldEnum)[keyof typeof DoctorScalarFieldEnum]
+
+
+export const HospitalScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  pincode: 'pincode',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HospitalScalarFieldEnum = (typeof HospitalScalarFieldEnum)[keyof typeof HospitalScalarFieldEnum]
+
+
+export const HospitalServiceScalarFieldEnum = {
+  hospitalId: 'hospitalId',
+  serviceId: 'serviceId'
+} as const
+
+export type HospitalServiceScalarFieldEnum = (typeof HospitalServiceScalarFieldEnum)[keyof typeof HospitalServiceScalarFieldEnum]
 
 
 export const ServiceScalarFieldEnum = {
@@ -114,8 +185,9 @@ export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeo
 
 export const BookingScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  assistantId: 'assistantId',
+  patientId: 'patientId',
+  guardianId: 'guardianId',
+  hospitalId: 'hospitalId',
   appointment: 'appointment',
   status: 'status',
   createdAt: 'createdAt'
@@ -137,7 +209,7 @@ export const ReviewScalarFieldEnum = {
   rating: 'rating',
   comment: 'comment',
   bookingId: 'bookingId',
-  assistantId: 'assistantId'
+  guardianId: 'guardianId'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
