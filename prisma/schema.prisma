@@ -66,7 +66,7 @@ model Guardian {
   age             Int
   gender          String
   locality        String
-  preferredAreas  String[]
+  preferredHospitals Hospital[] @relation("GuardianPreferredHospitals")
   reviews         Review[]
 
   verificationStatus VerificationStatus @default(PENDING)
@@ -114,7 +114,8 @@ model Hospital {
 
   doctors     Doctor[]
   services    HospitalService[]
-  bookings    Booking[]
+  bookings           Booking[]
+  preferredByGuardians Guardian[] @relation("GuardianPreferredHospitals")
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -154,20 +155,30 @@ model Service {
 model Booking {
   id           String        @id @default(uuid())
   patientId    String
-  guardianId  String
-  hospitalId  String
-  appointment  DateTime
-  status       BookingStatus @default(PENDING)
+  guardianId   String?       // Null until a guardian accepts
+  hospitalId   String
+  
+  // Pickup details
+  pickupType   PickupType
+  pickupLat    Float?        // Required if pickupType is HOME
+  pickupLng    Float?        // Required if pickupType is HOME
+  pickupAddress String?      // Optional address description
+  
+  // Scheduling
+  scheduledAt  DateTime      // When the pickup should happen
+  notes        String?       // Any additional notes from patient
+  
+  status       BookingStatus @default(REQUESTED)
 
   patient      Patient   @relation(fields: [patientId], references: [id])
-  guardian     Guardian @relation(fields: [guardianId], references: [id])
-  hospital     Hospital @relation(fields: [hospitalId], references: [id])
+  guardian     Guardian? @relation(fields: [guardianId], references: [id])
+  hospital     Hospital  @relation(fields: [hospitalId], references: [id])
 
   services     BookingService[]
   review       Review?
 
-
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 
@@ -196,9 +207,17 @@ model Review {
 
 //Enums
 enum BookingStatus {
-  PENDING
-  CONFIRMED
-  COMPLETED
+  REQUESTED     // Patient created booking, waiting for guardian
+  ACCEPTED      // Guardian accepted the request
+  REJECTED      // Guardian rejected (will try next guardian)
+  IN_PROGRESS   // Session is ongoing
+  COMPLETED     // Session finished successfully
+  CANCELLED     // Cancelled by patient or system
+}
+
+enum PickupType {
+  HOSPITAL      // Patient will meet at hospital
+  HOME          // Guardian picks up from patient's location
 }
 
 enum AuthProvider {

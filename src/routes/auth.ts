@@ -4,9 +4,12 @@ import { google } from "../lib/oauth"
 import { prisma } from "../lib/db";
 import type { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
+import { SendOtpSchema, VerifyOtpSchema } from "../types";
 import type { GoogleUserInfo } from "../types";
+import { twilio_client } from "../lib/oauth"
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
+const VERIFY_SERVICE_SID = process.env.VERIFY_SERVICE_SID;
 
 const router = Router()
 
@@ -34,9 +37,6 @@ router.get("/google", (req: Request, res: Response) => {
 
   return res.redirect(url.toString());
 });
-
-
-
 
 //Handle Google callback
 router.get("/google/callback", async (req, res) => {
@@ -83,7 +83,9 @@ router.get("/google/callback", async (req, res) => {
       },
     });
 
-    // If user already exists, return them
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+
+    // If user already exists, log them in
     if (existingAuthAccount) {
       const token = sign({ id: existingAuthAccount.userId }, JWT_SECRET, { expiresIn: "7d" });
 
@@ -94,11 +96,8 @@ router.get("/google/callback", async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
-      return res.json({
-        message: "Login successful",
-        user: existingAuthAccount.userId,
-        isNewUser: false,
-      });
+      // Redirect to frontend callback handler
+      return res.redirect(`${frontendUrl}/auth/google/callback`);
     }
 
     // New user - role is required (was passed when initiating /google?role=...)
@@ -140,17 +139,175 @@ router.get("/google/callback", async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    return res.json({
-      message: "Registration successful",
-      user: newUser,
-      isNewUser: true,
-      nextStep: "Please complete your profile",
-    });
+    // Redirect to frontend callback handler
+    return res.redirect(`${frontendUrl}/auth/google/callback`);
   } catch (err) {
     console.error("OAuth error:", err);
     return res.status(500).json({ error: "OAuth failed" });
   }
 });
+
+// Send OTP to phone number
+router.post('/send-otp', async (req, res) => {
+  try {
+    // Validate request body
+    const validatedData = SendOtpSchema.parse(req.body);
+    const { phoneNumber } = validatedData;
+
+    if (!VERIFY_SERVICE_SID) {
+      return res.status(500).json({ error: "Twilio Verify Service is not configured" });
+    }
+
+    // Send OTP via Twilio
+    const verification = await twilio_client.verify.v2
+      .services(VERIFY_SERVICE_SID)
+      .verifications.create({ to: phoneNumber, channel: 'sms' });
+    
+    return res.status(200).json({ 
+      message: 'OTP sent successfully', 
+      status: verification.status,
+      to: phoneNumber 
+    });
+  } catch (error: any) {
+    console.error("Send OTP error:", error);
+    
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ 
+        error: "Validation failed", 
+        details: error.errors 
+      });
+    }
+    
+    return res.status(500).json({ 
+      error: error.message || "Failed to send OTP" 
+    });
+  }
+});
+
+// Verify OTP and authenticate user
+router.post('/verify-otp', async (req, res) => {
+  try {
+    // Validate request body
+    const validatedData = VerifyOtpSchema.parse(req.body);
+    const { phoneNumber, code, role, fullName } = validatedData;
+
+    if (!VERIFY_SERVICE_SID) {
+      return res.status(500).json({ error: "Twilio Verify Service is not configured" });
+    }
+
+    // Verify OTP with Twilio
+    const verificationCheck = await twilio_client.verify.v2
+      .services(VERIFY_SERVICE_SID)
+      .verificationChecks.create({ to: phoneNumber, code: code });
+
+    if (verificationCheck.status !== 'approved') {
+      return res.status(400).json({ 
+        message: 'Invalid or expired OTP',
+        status: verificationCheck.status 
+      });
+    }
+
+    // OTP is valid, check if user exists
+    const existingAuthAccount = await prisma.authAccount.findUnique({
+      where: {
+        provider_providerUserId: {
+          provider: "MOBILE",
+          providerUserId: phoneNumber,
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    // If user already exists, log them in
+    if (existingAuthAccount) {
+      const token = sign(
+        { id: existingAuthAccount.userId }, 
+        JWT_SECRET, 
+        { expiresIn: '7d' }
+      );
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
+      return res.status(200).json({ 
+        message: 'Login successful', 
+        userId: existingAuthAccount.userId,
+        isNewUser: false,
+        token: token 
+      });
+    }
+
+    // New user - role and fullName are required
+    if (!role || !fullName) {
+      return res.status(400).json({
+        error: "Role and fullName are required for new users",
+        validRoles: ["PATIENT", "GUARDIAN", "DOCTOR"],
+        isNewUser: true,
+        phoneNumber: phoneNumber
+      });
+    }
+
+    // Create new user with mobile auth account
+    const newUser = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          fullName: fullName,
+          mobile: phoneNumber,
+          role: role,
+          authAccounts: {
+            create: {
+              provider: "MOBILE",
+              providerUserId: phoneNumber,
+            },
+          },
+        },
+      });
+
+      return user;
+    });
+
+    const token = sign(
+      { id: newUser.id }, 
+      JWT_SECRET, 
+      { expiresIn: '7d' }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return res.status(200).json({ 
+      message: 'Registration successful', 
+      user: newUser,
+      isNewUser: true,
+      nextStep: "Please complete your profile",
+      token: token 
+    });
+  } catch (error: any) {
+    console.error("Verify OTP error:", error);
+    
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ 
+        error: "Validation failed", 
+        details: error.errors 
+      });
+    }
+    
+    return res.status(500).json({ 
+      error: error.message || "Failed to verify OTP" 
+    });
+  }
+});
+
 
 router.get("/refresh", async (req, res) => {
     

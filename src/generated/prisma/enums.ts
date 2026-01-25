@@ -10,12 +10,23 @@
 */
 
 export const BookingStatus = {
-  PENDING: 'PENDING',
-  CONFIRMED: 'CONFIRMED',
-  COMPLETED: 'COMPLETED'
+  REQUESTED: 'REQUESTED',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
+
+export const PickupType = {
+  HOSPITAL: 'HOSPITAL',
+  HOME: 'HOME'
+} as const
+
+export type PickupType = (typeof PickupType)[keyof typeof PickupType]
 
 
 export const AuthProvider = {

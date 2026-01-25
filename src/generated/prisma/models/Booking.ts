@@ -20,8 +20,20 @@ export type BookingModel = runtime.Types.Result.DefaultSelection<Prisma.$Booking
 
 export type AggregateBooking = {
   _count: BookingCountAggregateOutputType | null
+  _avg: BookingAvgAggregateOutputType | null
+  _sum: BookingSumAggregateOutputType | null
   _min: BookingMinAggregateOutputType | null
   _max: BookingMaxAggregateOutputType | null
+}
+
+export type BookingAvgAggregateOutputType = {
+  pickupLat: number | null
+  pickupLng: number | null
+}
+
+export type BookingSumAggregateOutputType = {
+  pickupLat: number | null
+  pickupLng: number | null
 }
 
 export type BookingMinAggregateOutputType = {
@@ -29,9 +41,15 @@ export type BookingMinAggregateOutputType = {
   patientId: string | null
   guardianId: string | null
   hospitalId: string | null
-  appointment: Date | null
+  pickupType: $Enums.PickupType | null
+  pickupLat: number | null
+  pickupLng: number | null
+  pickupAddress: string | null
+  scheduledAt: Date | null
+  notes: string | null
   status: $Enums.BookingStatus | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type BookingMaxAggregateOutputType = {
@@ -39,9 +57,15 @@ export type BookingMaxAggregateOutputType = {
   patientId: string | null
   guardianId: string | null
   hospitalId: string | null
-  appointment: Date | null
+  pickupType: $Enums.PickupType | null
+  pickupLat: number | null
+  pickupLng: number | null
+  pickupAddress: string | null
+  scheduledAt: Date | null
+  notes: string | null
   status: $Enums.BookingStatus | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type BookingCountAggregateOutputType = {
@@ -49,21 +73,43 @@ export type BookingCountAggregateOutputType = {
   patientId: number
   guardianId: number
   hospitalId: number
-  appointment: number
+  pickupType: number
+  pickupLat: number
+  pickupLng: number
+  pickupAddress: number
+  scheduledAt: number
+  notes: number
   status: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
+
+export type BookingAvgAggregateInputType = {
+  pickupLat?: true
+  pickupLng?: true
+}
+
+export type BookingSumAggregateInputType = {
+  pickupLat?: true
+  pickupLng?: true
+}
 
 export type BookingMinAggregateInputType = {
   id?: true
   patientId?: true
   guardianId?: true
   hospitalId?: true
-  appointment?: true
+  pickupType?: true
+  pickupLat?: true
+  pickupLng?: true
+  pickupAddress?: true
+  scheduledAt?: true
+  notes?: true
   status?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type BookingMaxAggregateInputType = {
@@ -71,9 +117,15 @@ export type BookingMaxAggregateInputType = {
   patientId?: true
   guardianId?: true
   hospitalId?: true
-  appointment?: true
+  pickupType?: true
+  pickupLat?: true
+  pickupLng?: true
+  pickupAddress?: true
+  scheduledAt?: true
+  notes?: true
   status?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type BookingCountAggregateInputType = {
@@ -81,9 +133,15 @@ export type BookingCountAggregateInputType = {
   patientId?: true
   guardianId?: true
   hospitalId?: true
-  appointment?: true
+  pickupType?: true
+  pickupLat?: true
+  pickupLng?: true
+  pickupAddress?: true
+  scheduledAt?: true
+  notes?: true
   status?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -125,6 +183,18 @@ export type BookingAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: BookingAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: BookingSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: BookingMinAggregateInputType
@@ -155,6 +225,8 @@ export type BookingGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: BookingCountAggregateInputType | true
+  _avg?: BookingAvgAggregateInputType
+  _sum?: BookingSumAggregateInputType
   _min?: BookingMinAggregateInputType
   _max?: BookingMaxAggregateInputType
 }
@@ -162,12 +234,20 @@ export type BookingGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type BookingGroupByOutputType = {
   id: string
   patientId: string
-  guardianId: string
+  guardianId: string | null
   hospitalId: string
-  appointment: Date
+  pickupType: $Enums.PickupType
+  pickupLat: number | null
+  pickupLng: number | null
+  pickupAddress: string | null
+  scheduledAt: Date
+  notes: string | null
   status: $Enums.BookingStatus
   createdAt: Date
+  updatedAt: Date
   _count: BookingCountAggregateOutputType | null
+  _avg: BookingAvgAggregateOutputType | null
+  _sum: BookingSumAggregateOutputType | null
   _min: BookingMinAggregateOutputType | null
   _max: BookingMaxAggregateOutputType | null
 }
@@ -193,13 +273,19 @@ export type BookingWhereInput = {
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   id?: Prisma.StringFilter<"Booking"> | string
   patientId?: Prisma.StringFilter<"Booking"> | string
-  guardianId?: Prisma.StringFilter<"Booking"> | string
+  guardianId?: Prisma.StringNullableFilter<"Booking"> | string | null
   hospitalId?: Prisma.StringFilter<"Booking"> | string
-  appointment?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  pickupType?: Prisma.EnumPickupTypeFilter<"Booking"> | $Enums.PickupType
+  pickupLat?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  pickupLng?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  pickupAddress?: Prisma.StringNullableFilter<"Booking"> | string | null
+  scheduledAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
-  guardian?: Prisma.XOR<Prisma.GuardianScalarRelationFilter, Prisma.GuardianWhereInput>
+  guardian?: Prisma.XOR<Prisma.GuardianNullableScalarRelationFilter, Prisma.GuardianWhereInput> | null
   hospital?: Prisma.XOR<Prisma.HospitalScalarRelationFilter, Prisma.HospitalWhereInput>
   services?: Prisma.BookingServiceListRelationFilter
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
@@ -208,11 +294,17 @@ export type BookingWhereInput = {
 export type BookingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
-  guardianId?: Prisma.SortOrder
+  guardianId?: Prisma.SortOrderInput | Prisma.SortOrder
   hospitalId?: Prisma.SortOrder
-  appointment?: Prisma.SortOrder
+  pickupType?: Prisma.SortOrder
+  pickupLat?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickupLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickupAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   patient?: Prisma.PatientOrderByWithRelationInput
   guardian?: Prisma.GuardianOrderByWithRelationInput
   hospital?: Prisma.HospitalOrderByWithRelationInput
@@ -226,13 +318,19 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   patientId?: Prisma.StringFilter<"Booking"> | string
-  guardianId?: Prisma.StringFilter<"Booking"> | string
+  guardianId?: Prisma.StringNullableFilter<"Booking"> | string | null
   hospitalId?: Prisma.StringFilter<"Booking"> | string
-  appointment?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  pickupType?: Prisma.EnumPickupTypeFilter<"Booking"> | $Enums.PickupType
+  pickupLat?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  pickupLng?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  pickupAddress?: Prisma.StringNullableFilter<"Booking"> | string | null
+  scheduledAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
-  guardian?: Prisma.XOR<Prisma.GuardianScalarRelationFilter, Prisma.GuardianWhereInput>
+  guardian?: Prisma.XOR<Prisma.GuardianNullableScalarRelationFilter, Prisma.GuardianWhereInput> | null
   hospital?: Prisma.XOR<Prisma.HospitalScalarRelationFilter, Prisma.HospitalWhereInput>
   services?: Prisma.BookingServiceListRelationFilter
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
@@ -241,14 +339,22 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
 export type BookingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
-  guardianId?: Prisma.SortOrder
+  guardianId?: Prisma.SortOrderInput | Prisma.SortOrder
   hospitalId?: Prisma.SortOrder
-  appointment?: Prisma.SortOrder
+  pickupType?: Prisma.SortOrder
+  pickupLat?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickupLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  pickupAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.BookingCountOrderByAggregateInput
+  _avg?: Prisma.BookingAvgOrderByAggregateInput
   _max?: Prisma.BookingMaxOrderByAggregateInput
   _min?: Prisma.BookingMinOrderByAggregateInput
+  _sum?: Prisma.BookingSumOrderByAggregateInput
 }
 
 export type BookingScalarWhereWithAggregatesInput = {
@@ -257,20 +363,32 @@ export type BookingScalarWhereWithAggregatesInput = {
   NOT?: Prisma.BookingScalarWhereWithAggregatesInput | Prisma.BookingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   patientId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
-  guardianId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  guardianId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   hospitalId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
-  appointment?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
+  pickupType?: Prisma.EnumPickupTypeWithAggregatesFilter<"Booking"> | $Enums.PickupType
+  pickupLat?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
+  pickupLng?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
+  pickupAddress?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  scheduledAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   status?: Prisma.EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
 }
 
 export type BookingCreateInput = {
   id?: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutBookingsInput
-  guardian: Prisma.GuardianCreateNestedOneWithoutBookingsInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutBookingsInput
   hospital: Prisma.HospitalCreateNestedOneWithoutBookingsInput
   services?: Prisma.BookingServiceCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
@@ -279,22 +397,34 @@ export type BookingCreateInput = {
 export type BookingUncheckedCreateInput = {
   id?: string
   patientId: string
-  guardianId: string
+  guardianId?: string | null
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   services?: Prisma.BookingServiceUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
 }
 
 export type BookingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutBookingsNestedInput
-  guardian?: Prisma.GuardianUpdateOneRequiredWithoutBookingsNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutBookingsNestedInput
   hospital?: Prisma.HospitalUpdateOneRequiredWithoutBookingsNestedInput
   services?: Prisma.BookingServiceUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
@@ -303,11 +433,17 @@ export type BookingUpdateInput = {
 export type BookingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.BookingServiceUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
 }
@@ -315,28 +451,46 @@ export type BookingUncheckedUpdateInput = {
 export type BookingCreateManyInput = {
   id?: string
   patientId: string
-  guardianId: string
+  guardianId?: string | null
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type BookingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BookingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BookingListRelationFilter = {
@@ -354,9 +508,20 @@ export type BookingCountOrderByAggregateInput = {
   patientId?: Prisma.SortOrder
   guardianId?: Prisma.SortOrder
   hospitalId?: Prisma.SortOrder
-  appointment?: Prisma.SortOrder
+  pickupType?: Prisma.SortOrder
+  pickupLat?: Prisma.SortOrder
+  pickupLng?: Prisma.SortOrder
+  pickupAddress?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type BookingAvgOrderByAggregateInput = {
+  pickupLat?: Prisma.SortOrder
+  pickupLng?: Prisma.SortOrder
 }
 
 export type BookingMaxOrderByAggregateInput = {
@@ -364,9 +529,15 @@ export type BookingMaxOrderByAggregateInput = {
   patientId?: Prisma.SortOrder
   guardianId?: Prisma.SortOrder
   hospitalId?: Prisma.SortOrder
-  appointment?: Prisma.SortOrder
+  pickupType?: Prisma.SortOrder
+  pickupLat?: Prisma.SortOrder
+  pickupLng?: Prisma.SortOrder
+  pickupAddress?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type BookingMinOrderByAggregateInput = {
@@ -374,9 +545,20 @@ export type BookingMinOrderByAggregateInput = {
   patientId?: Prisma.SortOrder
   guardianId?: Prisma.SortOrder
   hospitalId?: Prisma.SortOrder
-  appointment?: Prisma.SortOrder
+  pickupType?: Prisma.SortOrder
+  pickupLat?: Prisma.SortOrder
+  pickupLng?: Prisma.SortOrder
+  pickupAddress?: Prisma.SortOrder
+  scheduledAt?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type BookingSumOrderByAggregateInput = {
+  pickupLat?: Prisma.SortOrder
+  pickupLng?: Prisma.SortOrder
 }
 
 export type BookingScalarRelationFilter = {
@@ -510,6 +692,18 @@ export type BookingUncheckedUpdateManyWithoutHospitalNestedInput = {
   deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
 }
 
+export type EnumPickupTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PickupType
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type EnumBookingStatusFieldUpdateOperationsInput = {
   set?: $Enums.BookingStatus
 }
@@ -544,10 +738,16 @@ export type BookingUpdateOneRequiredWithoutReviewNestedInput = {
 
 export type BookingCreateWithoutPatientInput = {
   id?: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
-  guardian: Prisma.GuardianCreateNestedOneWithoutBookingsInput
+  updatedAt?: Date | string
+  guardian?: Prisma.GuardianCreateNestedOneWithoutBookingsInput
   hospital: Prisma.HospitalCreateNestedOneWithoutBookingsInput
   services?: Prisma.BookingServiceCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
@@ -555,11 +755,17 @@ export type BookingCreateWithoutPatientInput = {
 
 export type BookingUncheckedCreateWithoutPatientInput = {
   id?: string
-  guardianId: string
+  guardianId?: string | null
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   services?: Prisma.BookingServiceUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
 }
@@ -596,18 +802,30 @@ export type BookingScalarWhereInput = {
   NOT?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
   id?: Prisma.StringFilter<"Booking"> | string
   patientId?: Prisma.StringFilter<"Booking"> | string
-  guardianId?: Prisma.StringFilter<"Booking"> | string
+  guardianId?: Prisma.StringNullableFilter<"Booking"> | string | null
   hospitalId?: Prisma.StringFilter<"Booking"> | string
-  appointment?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  pickupType?: Prisma.EnumPickupTypeFilter<"Booking"> | $Enums.PickupType
+  pickupLat?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  pickupLng?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  pickupAddress?: Prisma.StringNullableFilter<"Booking"> | string | null
+  scheduledAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
 }
 
 export type BookingCreateWithoutGuardianInput = {
   id?: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutBookingsInput
   hospital: Prisma.HospitalCreateNestedOneWithoutBookingsInput
   services?: Prisma.BookingServiceCreateNestedManyWithoutBookingInput
@@ -618,9 +836,15 @@ export type BookingUncheckedCreateWithoutGuardianInput = {
   id?: string
   patientId: string
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   services?: Prisma.BookingServiceUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
 }
@@ -653,11 +877,17 @@ export type BookingUpdateManyWithWhereWithoutGuardianInput = {
 
 export type BookingCreateWithoutHospitalInput = {
   id?: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutBookingsInput
-  guardian: Prisma.GuardianCreateNestedOneWithoutBookingsInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutBookingsInput
   services?: Prisma.BookingServiceCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
 }
@@ -665,10 +895,16 @@ export type BookingCreateWithoutHospitalInput = {
 export type BookingUncheckedCreateWithoutHospitalInput = {
   id?: string
   patientId: string
-  guardianId: string
-  appointment: Date | string
+  guardianId?: string | null
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   services?: Prisma.BookingServiceUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
 }
@@ -701,11 +937,17 @@ export type BookingUpdateManyWithWhereWithoutHospitalInput = {
 
 export type BookingCreateWithoutServicesInput = {
   id?: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutBookingsInput
-  guardian: Prisma.GuardianCreateNestedOneWithoutBookingsInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutBookingsInput
   hospital: Prisma.HospitalCreateNestedOneWithoutBookingsInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
 }
@@ -713,11 +955,17 @@ export type BookingCreateWithoutServicesInput = {
 export type BookingUncheckedCreateWithoutServicesInput = {
   id?: string
   patientId: string
-  guardianId: string
+  guardianId?: string | null
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
 }
 
@@ -739,11 +987,17 @@ export type BookingUpdateToOneWithWhereWithoutServicesInput = {
 
 export type BookingUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutBookingsNestedInput
-  guardian?: Prisma.GuardianUpdateOneRequiredWithoutBookingsNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutBookingsNestedInput
   hospital?: Prisma.HospitalUpdateOneRequiredWithoutBookingsNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
 }
@@ -751,21 +1005,33 @@ export type BookingUpdateWithoutServicesInput = {
 export type BookingUncheckedUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingCreateWithoutReviewInput = {
   id?: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutBookingsInput
-  guardian: Prisma.GuardianCreateNestedOneWithoutBookingsInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutBookingsInput
   hospital: Prisma.HospitalCreateNestedOneWithoutBookingsInput
   services?: Prisma.BookingServiceCreateNestedManyWithoutBookingInput
 }
@@ -773,11 +1039,17 @@ export type BookingCreateWithoutReviewInput = {
 export type BookingUncheckedCreateWithoutReviewInput = {
   id?: string
   patientId: string
-  guardianId: string
+  guardianId?: string | null
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
   services?: Prisma.BookingServiceUncheckedCreateNestedManyWithoutBookingInput
 }
 
@@ -799,11 +1071,17 @@ export type BookingUpdateToOneWithWhereWithoutReviewInput = {
 
 export type BookingUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutBookingsNestedInput
-  guardian?: Prisma.GuardianUpdateOneRequiredWithoutBookingsNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutBookingsNestedInput
   hospital?: Prisma.HospitalUpdateOneRequiredWithoutBookingsNestedInput
   services?: Prisma.BookingServiceUpdateManyWithoutBookingNestedInput
 }
@@ -811,29 +1089,47 @@ export type BookingUpdateWithoutReviewInput = {
 export type BookingUncheckedUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.BookingServiceUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateManyPatientInput = {
   id?: string
-  guardianId: string
+  guardianId?: string | null
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type BookingUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  guardian?: Prisma.GuardianUpdateOneRequiredWithoutBookingsNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardian?: Prisma.GuardianUpdateOneWithoutBookingsNestedInput
   hospital?: Prisma.HospitalUpdateOneRequiredWithoutBookingsNestedInput
   services?: Prisma.BookingServiceUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
@@ -841,38 +1137,62 @@ export type BookingUpdateWithoutPatientInput = {
 
 export type BookingUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.BookingServiceUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BookingCreateManyGuardianInput = {
   id?: string
   patientId: string
   hospitalId: string
-  appointment: Date | string
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type BookingUpdateWithoutGuardianInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutBookingsNestedInput
   hospital?: Prisma.HospitalUpdateOneRequiredWithoutBookingsNestedInput
   services?: Prisma.BookingServiceUpdateManyWithoutBookingNestedInput
@@ -883,9 +1203,15 @@ export type BookingUncheckedUpdateWithoutGuardianInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.BookingServiceUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
 }
@@ -894,27 +1220,45 @@ export type BookingUncheckedUpdateManyWithoutGuardianInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   hospitalId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BookingCreateManyHospitalInput = {
   id?: string
   patientId: string
-  guardianId: string
-  appointment: Date | string
+  guardianId?: string | null
+  pickupType: $Enums.PickupType
+  pickupLat?: number | null
+  pickupLng?: number | null
+  pickupAddress?: string | null
+  scheduledAt: Date | string
+  notes?: string | null
   status?: $Enums.BookingStatus
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type BookingUpdateWithoutHospitalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutBookingsNestedInput
-  guardian?: Prisma.GuardianUpdateOneRequiredWithoutBookingsNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutBookingsNestedInput
   services?: Prisma.BookingServiceUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
 }
@@ -922,10 +1266,16 @@ export type BookingUpdateWithoutHospitalInput = {
 export type BookingUncheckedUpdateWithoutHospitalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.BookingServiceUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
 }
@@ -933,10 +1283,16 @@ export type BookingUncheckedUpdateWithoutHospitalInput = {
 export type BookingUncheckedUpdateManyWithoutHospitalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
-  guardianId?: Prisma.StringFieldUpdateOperationsInput | string
-  appointment?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pickupType?: Prisma.EnumPickupTypeFieldUpdateOperationsInput | $Enums.PickupType
+  pickupLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  pickupAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -975,11 +1331,17 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   patientId?: boolean
   guardianId?: boolean
   hospitalId?: boolean
-  appointment?: boolean
+  pickupType?: boolean
+  pickupLat?: boolean
+  pickupLng?: boolean
+  pickupAddress?: boolean
+  scheduledAt?: boolean
+  notes?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
-  guardian?: boolean | Prisma.GuardianDefaultArgs<ExtArgs>
+  guardian?: boolean | Prisma.Booking$guardianArgs<ExtArgs>
   hospital?: boolean | Prisma.HospitalDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Booking$servicesArgs<ExtArgs>
   review?: boolean | Prisma.Booking$reviewArgs<ExtArgs>
@@ -991,11 +1353,17 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   patientId?: boolean
   guardianId?: boolean
   hospitalId?: boolean
-  appointment?: boolean
+  pickupType?: boolean
+  pickupLat?: boolean
+  pickupLng?: boolean
+  pickupAddress?: boolean
+  scheduledAt?: boolean
+  notes?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
-  guardian?: boolean | Prisma.GuardianDefaultArgs<ExtArgs>
+  guardian?: boolean | Prisma.Booking$guardianArgs<ExtArgs>
   hospital?: boolean | Prisma.HospitalDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
@@ -1004,11 +1372,17 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   patientId?: boolean
   guardianId?: boolean
   hospitalId?: boolean
-  appointment?: boolean
+  pickupType?: boolean
+  pickupLat?: boolean
+  pickupLng?: boolean
+  pickupAddress?: boolean
+  scheduledAt?: boolean
+  notes?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
-  guardian?: boolean | Prisma.GuardianDefaultArgs<ExtArgs>
+  guardian?: boolean | Prisma.Booking$guardianArgs<ExtArgs>
   hospital?: boolean | Prisma.HospitalDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
@@ -1017,15 +1391,21 @@ export type BookingSelectScalar = {
   patientId?: boolean
   guardianId?: boolean
   hospitalId?: boolean
-  appointment?: boolean
+  pickupType?: boolean
+  pickupLat?: boolean
+  pickupLng?: boolean
+  pickupAddress?: boolean
+  scheduledAt?: boolean
+  notes?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "guardianId" | "hospitalId" | "appointment" | "status" | "createdAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "guardianId" | "hospitalId" | "pickupType" | "pickupLat" | "pickupLng" | "pickupAddress" | "scheduledAt" | "notes" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
-  guardian?: boolean | Prisma.GuardianDefaultArgs<ExtArgs>
+  guardian?: boolean | Prisma.Booking$guardianArgs<ExtArgs>
   hospital?: boolean | Prisma.HospitalDefaultArgs<ExtArgs>
   services?: boolean | Prisma.Booking$servicesArgs<ExtArgs>
   review?: boolean | Prisma.Booking$reviewArgs<ExtArgs>
@@ -1033,12 +1413,12 @@ export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
 }
 export type BookingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
-  guardian?: boolean | Prisma.GuardianDefaultArgs<ExtArgs>
+  guardian?: boolean | Prisma.Booking$guardianArgs<ExtArgs>
   hospital?: boolean | Prisma.HospitalDefaultArgs<ExtArgs>
 }
 export type BookingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
-  guardian?: boolean | Prisma.GuardianDefaultArgs<ExtArgs>
+  guardian?: boolean | Prisma.Booking$guardianArgs<ExtArgs>
   hospital?: boolean | Prisma.HospitalDefaultArgs<ExtArgs>
 }
 
@@ -1046,7 +1426,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Booking"
   objects: {
     patient: Prisma.$PatientPayload<ExtArgs>
-    guardian: Prisma.$GuardianPayload<ExtArgs>
+    guardian: Prisma.$GuardianPayload<ExtArgs> | null
     hospital: Prisma.$HospitalPayload<ExtArgs>
     services: Prisma.$BookingServicePayload<ExtArgs>[]
     review: Prisma.$ReviewPayload<ExtArgs> | null
@@ -1054,11 +1434,17 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     patientId: string
-    guardianId: string
+    guardianId: string | null
     hospitalId: string
-    appointment: Date
+    pickupType: $Enums.PickupType
+    pickupLat: number | null
+    pickupLng: number | null
+    pickupAddress: string | null
+    scheduledAt: Date
+    notes: string | null
     status: $Enums.BookingStatus
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["booking"]>
   composites: {}
 }
@@ -1454,7 +1840,7 @@ readonly fields: BookingFieldRefs;
 export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   patient<T extends Prisma.PatientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PatientDefaultArgs<ExtArgs>>): Prisma.Prisma__PatientClient<runtime.Types.Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  guardian<T extends Prisma.GuardianDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GuardianDefaultArgs<ExtArgs>>): Prisma.Prisma__GuardianClient<runtime.Types.Result.GetResult<Prisma.$GuardianPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  guardian<T extends Prisma.Booking$guardianArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$guardianArgs<ExtArgs>>): Prisma.Prisma__GuardianClient<runtime.Types.Result.GetResult<Prisma.$GuardianPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   hospital<T extends Prisma.HospitalDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HospitalDefaultArgs<ExtArgs>>): Prisma.Prisma__HospitalClient<runtime.Types.Result.GetResult<Prisma.$HospitalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   services<T extends Prisma.Booking$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   review<T extends Prisma.Booking$reviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$reviewArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -1491,9 +1877,15 @@ export interface BookingFieldRefs {
   readonly patientId: Prisma.FieldRef<"Booking", 'String'>
   readonly guardianId: Prisma.FieldRef<"Booking", 'String'>
   readonly hospitalId: Prisma.FieldRef<"Booking", 'String'>
-  readonly appointment: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly pickupType: Prisma.FieldRef<"Booking", 'PickupType'>
+  readonly pickupLat: Prisma.FieldRef<"Booking", 'Float'>
+  readonly pickupLng: Prisma.FieldRef<"Booking", 'Float'>
+  readonly pickupAddress: Prisma.FieldRef<"Booking", 'String'>
+  readonly scheduledAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly notes: Prisma.FieldRef<"Booking", 'String'>
   readonly status: Prisma.FieldRef<"Booking", 'BookingStatus'>
   readonly createdAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Booking", 'DateTime'>
 }
     
 
@@ -1887,6 +2279,25 @@ export type BookingDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Bookings to delete.
    */
   limit?: number
+}
+
+/**
+ * Booking.guardian
+ */
+export type Booking$guardianArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Guardian
+   */
+  select?: Prisma.GuardianSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Guardian
+   */
+  omit?: Prisma.GuardianOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GuardianInclude<ExtArgs> | null
+  where?: Prisma.GuardianWhereInput
 }
 
 /**

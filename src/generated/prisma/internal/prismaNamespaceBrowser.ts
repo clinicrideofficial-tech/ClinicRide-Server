@@ -122,7 +122,6 @@ export const GuardianScalarFieldEnum = {
   age: 'age',
   gender: 'gender',
   locality: 'locality',
-  preferredAreas: 'preferredAreas',
   verificationStatus: 'verificationStatus',
   createdAt: 'createdAt'
 } as const
@@ -188,9 +187,15 @@ export const BookingScalarFieldEnum = {
   patientId: 'patientId',
   guardianId: 'guardianId',
   hospitalId: 'hospitalId',
-  appointment: 'appointment',
+  pickupType: 'pickupType',
+  pickupLat: 'pickupLat',
+  pickupLng: 'pickupLng',
+  pickupAddress: 'pickupAddress',
+  scheduledAt: 'scheduledAt',
+  notes: 'notes',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
