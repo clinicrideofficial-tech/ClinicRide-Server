@@ -32,10 +32,12 @@ app.use('/address', addressRoutes)
 // Initialize WebSocket server
 setupWebSocketServer(httpServer)
 
+const PORT = process.env.PORT || 3000;
+
 if (process.env.NODE_ENV !== 'test') {
-    httpServer.listen(3000, () => {
-        console.log(`Server is running on port 3000`)
-        console.log(`WebSocket server running on ws://localhost:3000/ws`)
+    httpServer.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`)
+        console.log(`WebSocket server running on ws://localhost:${PORT}/ws`)
     })
 }
 
