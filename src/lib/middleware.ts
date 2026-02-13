@@ -11,6 +11,7 @@ declare global {
     namespace Express {
         interface Request {
             userId?: string;
+            token?: string;
         }
     }
 }
@@ -27,6 +28,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     try {
         const payload = jwt.verify(token, JWT_SECRET) as JwtPayload;
         req.userId = payload.id; 
+        req.token = token;
         next(); 
 
     } catch (err: any) {

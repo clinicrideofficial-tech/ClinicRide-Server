@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   AuthAccount: 'AuthAccount',
   Patient: 'Patient',
+  Address: 'Address',
   Guardian: 'Guardian',
   Doctor: 'Doctor',
   Hospital: 'Hospital',
@@ -116,13 +117,27 @@ export const PatientScalarFieldEnum = {
 export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
 
 
+export const AddressScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  label: 'label',
+  addressLine: 'addressLine',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
+
+
 export const GuardianScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   age: 'age',
   gender: 'gender',
   locality: 'locality',
-  preferredAreas: 'preferredAreas',
   verificationStatus: 'verificationStatus',
   createdAt: 'createdAt'
 } as const
@@ -188,9 +203,15 @@ export const BookingScalarFieldEnum = {
   patientId: 'patientId',
   guardianId: 'guardianId',
   hospitalId: 'hospitalId',
-  appointment: 'appointment',
+  pickupType: 'pickupType',
+  pickupLat: 'pickupLat',
+  pickupLng: 'pickupLng',
+  pickupAddress: 'pickupAddress',
+  scheduledAt: 'scheduledAt',
+  notes: 'notes',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]

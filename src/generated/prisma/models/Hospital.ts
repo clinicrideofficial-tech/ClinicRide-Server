@@ -303,6 +303,7 @@ export type HospitalWhereInput = {
   doctors?: Prisma.DoctorListRelationFilter
   services?: Prisma.HospitalServiceListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
+  preferredByGuardians?: Prisma.GuardianListRelationFilter
 }
 
 export type HospitalOrderByWithRelationInput = {
@@ -324,6 +325,7 @@ export type HospitalOrderByWithRelationInput = {
   doctors?: Prisma.DoctorOrderByRelationAggregateInput
   services?: Prisma.HospitalServiceOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
+  preferredByGuardians?: Prisma.GuardianOrderByRelationAggregateInput
 }
 
 export type HospitalWhereUniqueInput = Prisma.AtLeast<{
@@ -348,6 +350,7 @@ export type HospitalWhereUniqueInput = Prisma.AtLeast<{
   doctors?: Prisma.DoctorListRelationFilter
   services?: Prisma.HospitalServiceListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
+  preferredByGuardians?: Prisma.GuardianListRelationFilter
 }, "id">
 
 export type HospitalOrderByWithAggregationInput = {
@@ -413,6 +416,7 @@ export type HospitalCreateInput = {
   doctors?: Prisma.DoctorCreateNestedManyWithoutHospitalInput
   services?: Prisma.HospitalServiceCreateNestedManyWithoutHospitalInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalUncheckedCreateInput = {
@@ -434,6 +438,7 @@ export type HospitalUncheckedCreateInput = {
   doctors?: Prisma.DoctorUncheckedCreateNestedManyWithoutHospitalInput
   services?: Prisma.HospitalServiceUncheckedCreateNestedManyWithoutHospitalInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianUncheckedCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalUpdateInput = {
@@ -455,6 +460,7 @@ export type HospitalUpdateInput = {
   doctors?: Prisma.DoctorUpdateManyWithoutHospitalNestedInput
   services?: Prisma.HospitalServiceUpdateManyWithoutHospitalNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalUncheckedUpdateInput = {
@@ -476,6 +482,7 @@ export type HospitalUncheckedUpdateInput = {
   doctors?: Prisma.DoctorUncheckedUpdateManyWithoutHospitalNestedInput
   services?: Prisma.HospitalServiceUncheckedUpdateManyWithoutHospitalNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUncheckedUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalCreateManyInput = {
@@ -530,6 +537,16 @@ export type HospitalUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type HospitalListRelationFilter = {
+  every?: Prisma.HospitalWhereInput
+  some?: Prisma.HospitalWhereInput
+  none?: Prisma.HospitalWhereInput
+}
+
+export type HospitalOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type HospitalScalarRelationFilter = {
@@ -601,6 +618,44 @@ export type HospitalSumOrderByAggregateInput = {
   longitude?: Prisma.SortOrder
 }
 
+export type HospitalCreateNestedManyWithoutPreferredByGuardiansInput = {
+  create?: Prisma.XOR<Prisma.HospitalCreateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput> | Prisma.HospitalCreateWithoutPreferredByGuardiansInput[] | Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput[]
+  connectOrCreate?: Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput | Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput[]
+  connect?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+}
+
+export type HospitalUncheckedCreateNestedManyWithoutPreferredByGuardiansInput = {
+  create?: Prisma.XOR<Prisma.HospitalCreateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput> | Prisma.HospitalCreateWithoutPreferredByGuardiansInput[] | Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput[]
+  connectOrCreate?: Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput | Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput[]
+  connect?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+}
+
+export type HospitalUpdateManyWithoutPreferredByGuardiansNestedInput = {
+  create?: Prisma.XOR<Prisma.HospitalCreateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput> | Prisma.HospitalCreateWithoutPreferredByGuardiansInput[] | Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput[]
+  connectOrCreate?: Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput | Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput[]
+  upsert?: Prisma.HospitalUpsertWithWhereUniqueWithoutPreferredByGuardiansInput | Prisma.HospitalUpsertWithWhereUniqueWithoutPreferredByGuardiansInput[]
+  set?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  disconnect?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  delete?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  connect?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  update?: Prisma.HospitalUpdateWithWhereUniqueWithoutPreferredByGuardiansInput | Prisma.HospitalUpdateWithWhereUniqueWithoutPreferredByGuardiansInput[]
+  updateMany?: Prisma.HospitalUpdateManyWithWhereWithoutPreferredByGuardiansInput | Prisma.HospitalUpdateManyWithWhereWithoutPreferredByGuardiansInput[]
+  deleteMany?: Prisma.HospitalScalarWhereInput | Prisma.HospitalScalarWhereInput[]
+}
+
+export type HospitalUncheckedUpdateManyWithoutPreferredByGuardiansNestedInput = {
+  create?: Prisma.XOR<Prisma.HospitalCreateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput> | Prisma.HospitalCreateWithoutPreferredByGuardiansInput[] | Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput[]
+  connectOrCreate?: Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput | Prisma.HospitalCreateOrConnectWithoutPreferredByGuardiansInput[]
+  upsert?: Prisma.HospitalUpsertWithWhereUniqueWithoutPreferredByGuardiansInput | Prisma.HospitalUpsertWithWhereUniqueWithoutPreferredByGuardiansInput[]
+  set?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  disconnect?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  delete?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  connect?: Prisma.HospitalWhereUniqueInput | Prisma.HospitalWhereUniqueInput[]
+  update?: Prisma.HospitalUpdateWithWhereUniqueWithoutPreferredByGuardiansInput | Prisma.HospitalUpdateWithWhereUniqueWithoutPreferredByGuardiansInput[]
+  updateMany?: Prisma.HospitalUpdateManyWithWhereWithoutPreferredByGuardiansInput | Prisma.HospitalUpdateManyWithWhereWithoutPreferredByGuardiansInput[]
+  deleteMany?: Prisma.HospitalScalarWhereInput | Prisma.HospitalScalarWhereInput[]
+}
+
 export type HospitalCreateNestedOneWithoutDoctorsInput = {
   create?: Prisma.XOR<Prisma.HospitalCreateWithoutDoctorsInput, Prisma.HospitalUncheckedCreateWithoutDoctorsInput>
   connectOrCreate?: Prisma.HospitalCreateOrConnectWithoutDoctorsInput
@@ -613,18 +668,6 @@ export type HospitalUpdateOneRequiredWithoutDoctorsNestedInput = {
   upsert?: Prisma.HospitalUpsertWithoutDoctorsInput
   connect?: Prisma.HospitalWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.HospitalUpdateToOneWithWhereWithoutDoctorsInput, Prisma.HospitalUpdateWithoutDoctorsInput>, Prisma.HospitalUncheckedUpdateWithoutDoctorsInput>
-}
-
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type HospitalCreateNestedOneWithoutServicesInput = {
@@ -655,6 +698,90 @@ export type HospitalUpdateOneRequiredWithoutBookingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.HospitalUpdateToOneWithWhereWithoutBookingsInput, Prisma.HospitalUpdateWithoutBookingsInput>, Prisma.HospitalUncheckedUpdateWithoutBookingsInput>
 }
 
+export type HospitalCreateWithoutPreferredByGuardiansInput = {
+  id?: string
+  name: string
+  description?: string | null
+  phone?: string | null
+  email?: string | null
+  address: string
+  city: string
+  state: string
+  country?: string
+  pincode?: string | null
+  latitude: number
+  longitude: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doctors?: Prisma.DoctorCreateNestedManyWithoutHospitalInput
+  services?: Prisma.HospitalServiceCreateNestedManyWithoutHospitalInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutHospitalInput
+}
+
+export type HospitalUncheckedCreateWithoutPreferredByGuardiansInput = {
+  id?: string
+  name: string
+  description?: string | null
+  phone?: string | null
+  email?: string | null
+  address: string
+  city: string
+  state: string
+  country?: string
+  pincode?: string | null
+  latitude: number
+  longitude: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doctors?: Prisma.DoctorUncheckedCreateNestedManyWithoutHospitalInput
+  services?: Prisma.HospitalServiceUncheckedCreateNestedManyWithoutHospitalInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHospitalInput
+}
+
+export type HospitalCreateOrConnectWithoutPreferredByGuardiansInput = {
+  where: Prisma.HospitalWhereUniqueInput
+  create: Prisma.XOR<Prisma.HospitalCreateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput>
+}
+
+export type HospitalUpsertWithWhereUniqueWithoutPreferredByGuardiansInput = {
+  where: Prisma.HospitalWhereUniqueInput
+  update: Prisma.XOR<Prisma.HospitalUpdateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedUpdateWithoutPreferredByGuardiansInput>
+  create: Prisma.XOR<Prisma.HospitalCreateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedCreateWithoutPreferredByGuardiansInput>
+}
+
+export type HospitalUpdateWithWhereUniqueWithoutPreferredByGuardiansInput = {
+  where: Prisma.HospitalWhereUniqueInput
+  data: Prisma.XOR<Prisma.HospitalUpdateWithoutPreferredByGuardiansInput, Prisma.HospitalUncheckedUpdateWithoutPreferredByGuardiansInput>
+}
+
+export type HospitalUpdateManyWithWhereWithoutPreferredByGuardiansInput = {
+  where: Prisma.HospitalScalarWhereInput
+  data: Prisma.XOR<Prisma.HospitalUpdateManyMutationInput, Prisma.HospitalUncheckedUpdateManyWithoutPreferredByGuardiansInput>
+}
+
+export type HospitalScalarWhereInput = {
+  AND?: Prisma.HospitalScalarWhereInput | Prisma.HospitalScalarWhereInput[]
+  OR?: Prisma.HospitalScalarWhereInput[]
+  NOT?: Prisma.HospitalScalarWhereInput | Prisma.HospitalScalarWhereInput[]
+  id?: Prisma.StringFilter<"Hospital"> | string
+  name?: Prisma.StringFilter<"Hospital"> | string
+  description?: Prisma.StringNullableFilter<"Hospital"> | string | null
+  phone?: Prisma.StringNullableFilter<"Hospital"> | string | null
+  email?: Prisma.StringNullableFilter<"Hospital"> | string | null
+  address?: Prisma.StringFilter<"Hospital"> | string
+  city?: Prisma.StringFilter<"Hospital"> | string
+  state?: Prisma.StringFilter<"Hospital"> | string
+  country?: Prisma.StringFilter<"Hospital"> | string
+  pincode?: Prisma.StringNullableFilter<"Hospital"> | string | null
+  latitude?: Prisma.FloatFilter<"Hospital"> | number
+  longitude?: Prisma.FloatFilter<"Hospital"> | number
+  isActive?: Prisma.BoolFilter<"Hospital"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Hospital"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Hospital"> | Date | string
+}
+
 export type HospitalCreateWithoutDoctorsInput = {
   id?: string
   name: string
@@ -673,6 +800,7 @@ export type HospitalCreateWithoutDoctorsInput = {
   updatedAt?: Date | string
   services?: Prisma.HospitalServiceCreateNestedManyWithoutHospitalInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalUncheckedCreateWithoutDoctorsInput = {
@@ -693,6 +821,7 @@ export type HospitalUncheckedCreateWithoutDoctorsInput = {
   updatedAt?: Date | string
   services?: Prisma.HospitalServiceUncheckedCreateNestedManyWithoutHospitalInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianUncheckedCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalCreateOrConnectWithoutDoctorsInput = {
@@ -729,6 +858,7 @@ export type HospitalUpdateWithoutDoctorsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.HospitalServiceUpdateManyWithoutHospitalNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalUncheckedUpdateWithoutDoctorsInput = {
@@ -749,6 +879,7 @@ export type HospitalUncheckedUpdateWithoutDoctorsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.HospitalServiceUncheckedUpdateManyWithoutHospitalNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUncheckedUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalCreateWithoutServicesInput = {
@@ -769,6 +900,7 @@ export type HospitalCreateWithoutServicesInput = {
   updatedAt?: Date | string
   doctors?: Prisma.DoctorCreateNestedManyWithoutHospitalInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalUncheckedCreateWithoutServicesInput = {
@@ -789,6 +921,7 @@ export type HospitalUncheckedCreateWithoutServicesInput = {
   updatedAt?: Date | string
   doctors?: Prisma.DoctorUncheckedCreateNestedManyWithoutHospitalInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianUncheckedCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalCreateOrConnectWithoutServicesInput = {
@@ -825,6 +958,7 @@ export type HospitalUpdateWithoutServicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctors?: Prisma.DoctorUpdateManyWithoutHospitalNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalUncheckedUpdateWithoutServicesInput = {
@@ -845,6 +979,7 @@ export type HospitalUncheckedUpdateWithoutServicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctors?: Prisma.DoctorUncheckedUpdateManyWithoutHospitalNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUncheckedUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalCreateWithoutBookingsInput = {
@@ -865,6 +1000,7 @@ export type HospitalCreateWithoutBookingsInput = {
   updatedAt?: Date | string
   doctors?: Prisma.DoctorCreateNestedManyWithoutHospitalInput
   services?: Prisma.HospitalServiceCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalUncheckedCreateWithoutBookingsInput = {
@@ -885,6 +1021,7 @@ export type HospitalUncheckedCreateWithoutBookingsInput = {
   updatedAt?: Date | string
   doctors?: Prisma.DoctorUncheckedCreateNestedManyWithoutHospitalInput
   services?: Prisma.HospitalServiceUncheckedCreateNestedManyWithoutHospitalInput
+  preferredByGuardians?: Prisma.GuardianUncheckedCreateNestedManyWithoutPreferredHospitalsInput
 }
 
 export type HospitalCreateOrConnectWithoutBookingsInput = {
@@ -921,6 +1058,7 @@ export type HospitalUpdateWithoutBookingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctors?: Prisma.DoctorUpdateManyWithoutHospitalNestedInput
   services?: Prisma.HospitalServiceUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUpdateManyWithoutPreferredHospitalsNestedInput
 }
 
 export type HospitalUncheckedUpdateWithoutBookingsInput = {
@@ -941,6 +1079,67 @@ export type HospitalUncheckedUpdateWithoutBookingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doctors?: Prisma.DoctorUncheckedUpdateManyWithoutHospitalNestedInput
   services?: Prisma.HospitalServiceUncheckedUpdateManyWithoutHospitalNestedInput
+  preferredByGuardians?: Prisma.GuardianUncheckedUpdateManyWithoutPreferredHospitalsNestedInput
+}
+
+export type HospitalUpdateWithoutPreferredByGuardiansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doctors?: Prisma.DoctorUpdateManyWithoutHospitalNestedInput
+  services?: Prisma.HospitalServiceUpdateManyWithoutHospitalNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutHospitalNestedInput
+}
+
+export type HospitalUncheckedUpdateWithoutPreferredByGuardiansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doctors?: Prisma.DoctorUncheckedUpdateManyWithoutHospitalNestedInput
+  services?: Prisma.HospitalServiceUncheckedUpdateManyWithoutHospitalNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutHospitalNestedInput
+}
+
+export type HospitalUncheckedUpdateManyWithoutPreferredByGuardiansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -952,12 +1151,14 @@ export type HospitalCountOutputType = {
   doctors: number
   services: number
   bookings: number
+  preferredByGuardians: number
 }
 
 export type HospitalCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   doctors?: boolean | HospitalCountOutputTypeCountDoctorsArgs
   services?: boolean | HospitalCountOutputTypeCountServicesArgs
   bookings?: boolean | HospitalCountOutputTypeCountBookingsArgs
+  preferredByGuardians?: boolean | HospitalCountOutputTypeCountPreferredByGuardiansArgs
 }
 
 /**
@@ -991,6 +1192,13 @@ export type HospitalCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.BookingWhereInput
 }
 
+/**
+ * HospitalCountOutputType without action
+ */
+export type HospitalCountOutputTypeCountPreferredByGuardiansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GuardianWhereInput
+}
+
 
 export type HospitalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1011,6 +1219,7 @@ export type HospitalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   doctors?: boolean | Prisma.Hospital$doctorsArgs<ExtArgs>
   services?: boolean | Prisma.Hospital$servicesArgs<ExtArgs>
   bookings?: boolean | Prisma.Hospital$bookingsArgs<ExtArgs>
+  preferredByGuardians?: boolean | Prisma.Hospital$preferredByGuardiansArgs<ExtArgs>
   _count?: boolean | Prisma.HospitalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hospital"]>
 
@@ -1073,6 +1282,7 @@ export type HospitalInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   doctors?: boolean | Prisma.Hospital$doctorsArgs<ExtArgs>
   services?: boolean | Prisma.Hospital$servicesArgs<ExtArgs>
   bookings?: boolean | Prisma.Hospital$bookingsArgs<ExtArgs>
+  preferredByGuardians?: boolean | Prisma.Hospital$preferredByGuardiansArgs<ExtArgs>
   _count?: boolean | Prisma.HospitalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type HospitalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1084,6 +1294,7 @@ export type $HospitalPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     doctors: Prisma.$DoctorPayload<ExtArgs>[]
     services: Prisma.$HospitalServicePayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
+    preferredByGuardians: Prisma.$GuardianPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1498,6 +1709,7 @@ export interface Prisma__HospitalClient<T, Null = never, ExtArgs extends runtime
   doctors<T extends Prisma.Hospital$doctorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Hospital$doctorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DoctorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   services<T extends Prisma.Hospital$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Hospital$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HospitalServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.Hospital$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Hospital$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  preferredByGuardians<T extends Prisma.Hospital$preferredByGuardiansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Hospital$preferredByGuardiansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuardianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1999,6 +2211,30 @@ export type Hospital$bookingsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
+ * Hospital.preferredByGuardians
+ */
+export type Hospital$preferredByGuardiansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Guardian
+   */
+  select?: Prisma.GuardianSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Guardian
+   */
+  omit?: Prisma.GuardianOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GuardianInclude<ExtArgs> | null
+  where?: Prisma.GuardianWhereInput
+  orderBy?: Prisma.GuardianOrderByWithRelationInput | Prisma.GuardianOrderByWithRelationInput[]
+  cursor?: Prisma.GuardianWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GuardianScalarFieldEnum | Prisma.GuardianScalarFieldEnum[]
 }
 
 /**

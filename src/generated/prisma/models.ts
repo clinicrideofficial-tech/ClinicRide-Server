@@ -11,6 +11,7 @@
 export type * from './models/User.ts'
 export type * from './models/AuthAccount.ts'
 export type * from './models/Patient.ts'
+export type * from './models/Address.ts'
 export type * from './models/Guardian.ts'
 export type * from './models/Doctor.ts'
 export type * from './models/Hospital.ts'

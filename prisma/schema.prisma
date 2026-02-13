@@ -52,10 +52,31 @@ model Patient {
   gender          String
   emergencyPhone  String?
   bookings        Booking[]
+  addresses       Address[]  // One-to-many relation
 
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt       DateTime @default(now())
+}
+
+// Patient Saved Addresses
+model Address {
+  id              String   @id @default(uuid())
+  patientId       String
+
+  label           String   // e.g., "Home", "Work", "Parent's House"
+  addressLine     String   // Full address text
+  latitude        Float
+  longitude       Float
+  
+  isDefault       Boolean  @default(false) // Mark one address as default
+
+  patient         Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([patientId])
 }
 
 
@@ -66,7 +87,7 @@ model Guardian {
   age             Int
   gender          String
   locality        String
-  preferredAreas  String[]
+  preferredHospitals Hospital[] @relation("GuardianPreferredHospitals")
   reviews         Review[]
 
   verificationStatus VerificationStatus @default(PENDING)
@@ -114,7 +135,8 @@ model Hospital {
 
   doctors     Doctor[]
   services    HospitalService[]
-  bookings    Booking[]
+  bookings           Booking[]
+  preferredByGuardians Guardian[] @relation("GuardianPreferredHospitals")
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -154,20 +176,30 @@ model Service {
 model Booking {
   id           String        @id @default(uuid())
   patientId    String
-  guardianId  String
-  hospitalId  String
-  appointment  DateTime
-  status       BookingStatus @default(PENDING)
+  guardianId   String?       // Null until a guardian accepts
+  hospitalId   String
+  
+  // Pickup details
+  pickupType   PickupType
+  pickupLat    Float?        // Required if pickupType is HOME
+  pickupLng    Float?        // Required if pickupType is HOME
+  pickupAddress String?      // Optional address description
+  
+  // Scheduling
+  scheduledAt  DateTime      // When the pickup should happen
+  notes        String?       // Any additional notes from patient
+  
+  status       BookingStatus @default(REQUESTED)
 
-  patient      Patient   @relation(fields: [patientId], references: [id])
-  guardian     Guardian @relation(fields: [guardianId], references: [id])
-  hospital     Hospital @relation(fields: [hospitalId], references: [id])
+  patient      Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  guardian     Guardian? @relation(fields: [guardianId], references: [id], onDelete: SetNull)
+  hospital     Hospital  @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
 
   services     BookingService[]
   review       Review?
 
-
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 
@@ -176,8 +208,8 @@ model BookingService {
   bookingId String
   serviceId String
 
-  booking  Booking @relation(fields: [bookingId], references: [id])
-  service  Service @relation(fields: [serviceId], references: [id])
+  booking  Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  service  Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
   @@id([bookingId, serviceId])
 }
@@ -189,16 +221,24 @@ model Review {
   bookingId  String   @unique
   guardianId String
 
-  booking     Booking   @relation(fields: [bookingId], references: [id])
-  guardian   Guardian @relation(fields: [guardianId], references: [id])
+  booking     Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  guardian   Guardian @relation(fields: [guardianId], references: [id], onDelete: Cascade)
 }
 
 
 //Enums
 enum BookingStatus {
-  PENDING
-  CONFIRMED
-  COMPLETED
+  REQUESTED     // Patient created booking, waiting for guardian
+  ACCEPTED      // Guardian accepted the request
+  REJECTED      // Guardian rejected (will try next guardian)
+  IN_PROGRESS   // Session is ongoing
+  COMPLETED     // Session finished successfully
+  CANCELLED     // Cancelled by patient or system
+}
+
+enum PickupType {
+  HOSPITAL      // Patient will meet at hospital
+  HOME          // Guardian picks up from patient's location
 }
 
 enum AuthProvider {

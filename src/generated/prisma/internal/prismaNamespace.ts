@@ -387,6 +387,7 @@ export const ModelName = {
   User: 'User',
   AuthAccount: 'AuthAccount',
   Patient: 'Patient',
+  Address: 'Address',
   Guardian: 'Guardian',
   Doctor: 'Doctor',
   Hospital: 'Hospital',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authAccount" | "patient" | "guardian" | "doctor" | "hospital" | "hospitalService" | "service" | "booking" | "bookingService" | "review"
+    modelProps: "user" | "authAccount" | "patient" | "address" | "guardian" | "doctor" | "hospital" | "hospitalService" | "service" | "booking" | "bookingService" | "review"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -633,6 +634,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PatientCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PatientCountAggregateOutputType> | number
+        }
+      }
+    }
+    Address: {
+      payload: Prisma.$AddressPayload<ExtArgs>
+      fields: Prisma.AddressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AddressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AddressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+        }
+        findFirst: {
+          args: Prisma.AddressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AddressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+        }
+        findMany: {
+          args: Prisma.AddressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>[]
+        }
+        create: {
+          args: Prisma.AddressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+        }
+        createMany: {
+          args: Prisma.AddressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AddressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>[]
+        }
+        delete: {
+          args: Prisma.AddressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+        }
+        update: {
+          args: Prisma.AddressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+        }
+        deleteMany: {
+          args: Prisma.AddressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AddressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AddressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>[]
+        }
+        upsert: {
+          args: Prisma.AddressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+        }
+        aggregate: {
+          args: Prisma.AddressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAddress>
+        }
+        groupBy: {
+          args: Prisma.AddressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AddressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AddressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AddressCountAggregateOutputType> | number
         }
       }
     }
@@ -1303,13 +1378,27 @@ export const PatientScalarFieldEnum = {
 export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
 
 
+export const AddressScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  label: 'label',
+  addressLine: 'addressLine',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
+
+
 export const GuardianScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   age: 'age',
   gender: 'gender',
   locality: 'locality',
-  preferredAreas: 'preferredAreas',
   verificationStatus: 'verificationStatus',
   createdAt: 'createdAt'
 } as const
@@ -1375,9 +1464,15 @@ export const BookingScalarFieldEnum = {
   patientId: 'patientId',
   guardianId: 'guardianId',
   hospitalId: 'hospitalId',
-  appointment: 'appointment',
+  pickupType: 'pickupType',
+  pickupLat: 'pickupLat',
+  pickupLng: 'pickupLng',
+  pickupAddress: 'pickupAddress',
+  scheduledAt: 'scheduledAt',
+  notes: 'notes',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
@@ -1503,20 +1598,6 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'VerificationStatus'
- */
-export type EnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus'>
-    
-
-
-/**
- * Reference to a field of type 'VerificationStatus[]'
- */
-export type ListEnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus[]'>
-    
-
-
-/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1534,6 +1615,34 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'VerificationStatus'
+ */
+export type EnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VerificationStatus[]'
+ */
+export type ListEnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PickupType'
+ */
+export type EnumPickupTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PickupType'>
+    
+
+
+/**
+ * Reference to a field of type 'PickupType[]'
+ */
+export type ListEnumPickupTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PickupType[]'>
     
 
 
@@ -1648,6 +1757,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   authAccount?: Prisma.AuthAccountOmit
   patient?: Prisma.PatientOmit
+  address?: Prisma.AddressOmit
   guardian?: Prisma.GuardianOmit
   doctor?: Prisma.DoctorOmit
   hospital?: Prisma.HospitalOmit

@@ -60,7 +60,6 @@ export type GuardianCountAggregateOutputType = {
   age: number
   gender: number
   locality: number
-  preferredAreas: number
   verificationStatus: number
   createdAt: number
   _all: number
@@ -101,7 +100,6 @@ export type GuardianCountAggregateInputType = {
   age?: true
   gender?: true
   locality?: true
-  preferredAreas?: true
   verificationStatus?: true
   createdAt?: true
   _all?: true
@@ -199,7 +197,6 @@ export type GuardianGroupByOutputType = {
   age: number
   gender: string
   locality: string
-  preferredAreas: string[]
   verificationStatus: $Enums.VerificationStatus
   createdAt: Date
   _count: GuardianCountAggregateOutputType | null
@@ -233,9 +230,9 @@ export type GuardianWhereInput = {
   age?: Prisma.IntFilter<"Guardian"> | number
   gender?: Prisma.StringFilter<"Guardian"> | string
   locality?: Prisma.StringFilter<"Guardian"> | string
-  preferredAreas?: Prisma.StringNullableListFilter<"Guardian">
   verificationStatus?: Prisma.EnumVerificationStatusFilter<"Guardian"> | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFilter<"Guardian"> | Date | string
+  preferredHospitals?: Prisma.HospitalListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -247,9 +244,9 @@ export type GuardianOrderByWithRelationInput = {
   age?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   locality?: Prisma.SortOrder
-  preferredAreas?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  preferredHospitals?: Prisma.HospitalOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
@@ -264,9 +261,9 @@ export type GuardianWhereUniqueInput = Prisma.AtLeast<{
   age?: Prisma.IntFilter<"Guardian"> | number
   gender?: Prisma.StringFilter<"Guardian"> | string
   locality?: Prisma.StringFilter<"Guardian"> | string
-  preferredAreas?: Prisma.StringNullableListFilter<"Guardian">
   verificationStatus?: Prisma.EnumVerificationStatusFilter<"Guardian"> | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFilter<"Guardian"> | Date | string
+  preferredHospitals?: Prisma.HospitalListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -278,7 +275,6 @@ export type GuardianOrderByWithAggregationInput = {
   age?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   locality?: Prisma.SortOrder
-  preferredAreas?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.GuardianCountOrderByAggregateInput
@@ -297,7 +293,6 @@ export type GuardianScalarWhereWithAggregatesInput = {
   age?: Prisma.IntWithAggregatesFilter<"Guardian"> | number
   gender?: Prisma.StringWithAggregatesFilter<"Guardian"> | string
   locality?: Prisma.StringWithAggregatesFilter<"Guardian"> | string
-  preferredAreas?: Prisma.StringNullableListFilter<"Guardian">
   verificationStatus?: Prisma.EnumVerificationStatusWithAggregatesFilter<"Guardian"> | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Guardian"> | Date | string
 }
@@ -307,9 +302,9 @@ export type GuardianCreateInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalCreateNestedManyWithoutPreferredByGuardiansInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutGuardianInput
   bookings?: Prisma.BookingCreateNestedManyWithoutGuardianInput
   user: Prisma.UserCreateNestedOneWithoutGuardianInput
@@ -321,9 +316,9 @@ export type GuardianUncheckedCreateInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedCreateNestedManyWithoutPreferredByGuardiansInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuardianInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuardianInput
 }
@@ -333,9 +328,9 @@ export type GuardianUpdateInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUpdateManyWithoutPreferredByGuardiansNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutGuardianNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutGuardianNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutGuardianNestedInput
@@ -347,9 +342,9 @@ export type GuardianUncheckedUpdateInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedUpdateManyWithoutPreferredByGuardiansNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGuardianNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutGuardianNestedInput
 }
@@ -360,7 +355,6 @@ export type GuardianCreateManyInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
 }
@@ -370,7 +364,6 @@ export type GuardianUpdateManyMutationInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -381,7 +374,6 @@ export type GuardianUncheckedUpdateManyInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,21 +383,12 @@ export type GuardianNullableScalarRelationFilter = {
   isNot?: Prisma.GuardianWhereInput | null
 }
 
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
-}
-
 export type GuardianCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   age?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   locality?: Prisma.SortOrder
-  preferredAreas?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -436,6 +419,16 @@ export type GuardianMinOrderByAggregateInput = {
 
 export type GuardianSumOrderByAggregateInput = {
   age?: Prisma.SortOrder
+}
+
+export type GuardianListRelationFilter = {
+  every?: Prisma.GuardianWhereInput
+  some?: Prisma.GuardianWhereInput
+  none?: Prisma.GuardianWhereInput
+}
+
+export type GuardianOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type GuardianScalarRelationFilter = {
@@ -475,17 +468,46 @@ export type GuardianUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GuardianUpdateToOneWithWhereWithoutUserInput, Prisma.GuardianUpdateWithoutUserInput>, Prisma.GuardianUncheckedUpdateWithoutUserInput>
 }
 
-export type GuardianCreatepreferredAreasInput = {
-  set: string[]
-}
-
-export type GuardianUpdatepreferredAreasInput = {
-  set?: string[]
-  push?: string | string[]
-}
-
 export type EnumVerificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.VerificationStatus
+}
+
+export type GuardianCreateNestedManyWithoutPreferredHospitalsInput = {
+  create?: Prisma.XOR<Prisma.GuardianCreateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput> | Prisma.GuardianCreateWithoutPreferredHospitalsInput[] | Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput[]
+  connectOrCreate?: Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput | Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput[]
+  connect?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+}
+
+export type GuardianUncheckedCreateNestedManyWithoutPreferredHospitalsInput = {
+  create?: Prisma.XOR<Prisma.GuardianCreateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput> | Prisma.GuardianCreateWithoutPreferredHospitalsInput[] | Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput[]
+  connectOrCreate?: Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput | Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput[]
+  connect?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+}
+
+export type GuardianUpdateManyWithoutPreferredHospitalsNestedInput = {
+  create?: Prisma.XOR<Prisma.GuardianCreateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput> | Prisma.GuardianCreateWithoutPreferredHospitalsInput[] | Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput[]
+  connectOrCreate?: Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput | Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput[]
+  upsert?: Prisma.GuardianUpsertWithWhereUniqueWithoutPreferredHospitalsInput | Prisma.GuardianUpsertWithWhereUniqueWithoutPreferredHospitalsInput[]
+  set?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  disconnect?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  delete?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  connect?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  update?: Prisma.GuardianUpdateWithWhereUniqueWithoutPreferredHospitalsInput | Prisma.GuardianUpdateWithWhereUniqueWithoutPreferredHospitalsInput[]
+  updateMany?: Prisma.GuardianUpdateManyWithWhereWithoutPreferredHospitalsInput | Prisma.GuardianUpdateManyWithWhereWithoutPreferredHospitalsInput[]
+  deleteMany?: Prisma.GuardianScalarWhereInput | Prisma.GuardianScalarWhereInput[]
+}
+
+export type GuardianUncheckedUpdateManyWithoutPreferredHospitalsNestedInput = {
+  create?: Prisma.XOR<Prisma.GuardianCreateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput> | Prisma.GuardianCreateWithoutPreferredHospitalsInput[] | Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput[]
+  connectOrCreate?: Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput | Prisma.GuardianCreateOrConnectWithoutPreferredHospitalsInput[]
+  upsert?: Prisma.GuardianUpsertWithWhereUniqueWithoutPreferredHospitalsInput | Prisma.GuardianUpsertWithWhereUniqueWithoutPreferredHospitalsInput[]
+  set?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  disconnect?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  delete?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  connect?: Prisma.GuardianWhereUniqueInput | Prisma.GuardianWhereUniqueInput[]
+  update?: Prisma.GuardianUpdateWithWhereUniqueWithoutPreferredHospitalsInput | Prisma.GuardianUpdateWithWhereUniqueWithoutPreferredHospitalsInput[]
+  updateMany?: Prisma.GuardianUpdateManyWithWhereWithoutPreferredHospitalsInput | Prisma.GuardianUpdateManyWithWhereWithoutPreferredHospitalsInput[]
+  deleteMany?: Prisma.GuardianScalarWhereInput | Prisma.GuardianScalarWhereInput[]
 }
 
 export type GuardianCreateNestedOneWithoutBookingsInput = {
@@ -494,10 +516,12 @@ export type GuardianCreateNestedOneWithoutBookingsInput = {
   connect?: Prisma.GuardianWhereUniqueInput
 }
 
-export type GuardianUpdateOneRequiredWithoutBookingsNestedInput = {
+export type GuardianUpdateOneWithoutBookingsNestedInput = {
   create?: Prisma.XOR<Prisma.GuardianCreateWithoutBookingsInput, Prisma.GuardianUncheckedCreateWithoutBookingsInput>
   connectOrCreate?: Prisma.GuardianCreateOrConnectWithoutBookingsInput
   upsert?: Prisma.GuardianUpsertWithoutBookingsInput
+  disconnect?: Prisma.GuardianWhereInput | boolean
+  delete?: Prisma.GuardianWhereInput | boolean
   connect?: Prisma.GuardianWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.GuardianUpdateToOneWithWhereWithoutBookingsInput, Prisma.GuardianUpdateWithoutBookingsInput>, Prisma.GuardianUncheckedUpdateWithoutBookingsInput>
 }
@@ -521,9 +545,9 @@ export type GuardianCreateWithoutUserInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalCreateNestedManyWithoutPreferredByGuardiansInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutGuardianInput
   bookings?: Prisma.BookingCreateNestedManyWithoutGuardianInput
 }
@@ -533,9 +557,9 @@ export type GuardianUncheckedCreateWithoutUserInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedCreateNestedManyWithoutPreferredByGuardiansInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuardianInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuardianInput
 }
@@ -561,9 +585,9 @@ export type GuardianUpdateWithoutUserInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUpdateManyWithoutPreferredByGuardiansNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutGuardianNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutGuardianNestedInput
 }
@@ -573,11 +597,69 @@ export type GuardianUncheckedUpdateWithoutUserInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedUpdateManyWithoutPreferredByGuardiansNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGuardianNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutGuardianNestedInput
+}
+
+export type GuardianCreateWithoutPreferredHospitalsInput = {
+  id?: string
+  age: number
+  gender: string
+  locality: string
+  verificationStatus?: $Enums.VerificationStatus
+  createdAt?: Date | string
+  reviews?: Prisma.ReviewCreateNestedManyWithoutGuardianInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutGuardianInput
+  user: Prisma.UserCreateNestedOneWithoutGuardianInput
+}
+
+export type GuardianUncheckedCreateWithoutPreferredHospitalsInput = {
+  id?: string
+  userId: string
+  age: number
+  gender: string
+  locality: string
+  verificationStatus?: $Enums.VerificationStatus
+  createdAt?: Date | string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuardianInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuardianInput
+}
+
+export type GuardianCreateOrConnectWithoutPreferredHospitalsInput = {
+  where: Prisma.GuardianWhereUniqueInput
+  create: Prisma.XOR<Prisma.GuardianCreateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput>
+}
+
+export type GuardianUpsertWithWhereUniqueWithoutPreferredHospitalsInput = {
+  where: Prisma.GuardianWhereUniqueInput
+  update: Prisma.XOR<Prisma.GuardianUpdateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedUpdateWithoutPreferredHospitalsInput>
+  create: Prisma.XOR<Prisma.GuardianCreateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedCreateWithoutPreferredHospitalsInput>
+}
+
+export type GuardianUpdateWithWhereUniqueWithoutPreferredHospitalsInput = {
+  where: Prisma.GuardianWhereUniqueInput
+  data: Prisma.XOR<Prisma.GuardianUpdateWithoutPreferredHospitalsInput, Prisma.GuardianUncheckedUpdateWithoutPreferredHospitalsInput>
+}
+
+export type GuardianUpdateManyWithWhereWithoutPreferredHospitalsInput = {
+  where: Prisma.GuardianScalarWhereInput
+  data: Prisma.XOR<Prisma.GuardianUpdateManyMutationInput, Prisma.GuardianUncheckedUpdateManyWithoutPreferredHospitalsInput>
+}
+
+export type GuardianScalarWhereInput = {
+  AND?: Prisma.GuardianScalarWhereInput | Prisma.GuardianScalarWhereInput[]
+  OR?: Prisma.GuardianScalarWhereInput[]
+  NOT?: Prisma.GuardianScalarWhereInput | Prisma.GuardianScalarWhereInput[]
+  id?: Prisma.StringFilter<"Guardian"> | string
+  userId?: Prisma.StringFilter<"Guardian"> | string
+  age?: Prisma.IntFilter<"Guardian"> | number
+  gender?: Prisma.StringFilter<"Guardian"> | string
+  locality?: Prisma.StringFilter<"Guardian"> | string
+  verificationStatus?: Prisma.EnumVerificationStatusFilter<"Guardian"> | $Enums.VerificationStatus
+  createdAt?: Prisma.DateTimeFilter<"Guardian"> | Date | string
 }
 
 export type GuardianCreateWithoutBookingsInput = {
@@ -585,9 +667,9 @@ export type GuardianCreateWithoutBookingsInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalCreateNestedManyWithoutPreferredByGuardiansInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutGuardianInput
   user: Prisma.UserCreateNestedOneWithoutGuardianInput
 }
@@ -598,9 +680,9 @@ export type GuardianUncheckedCreateWithoutBookingsInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedCreateNestedManyWithoutPreferredByGuardiansInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuardianInput
 }
 
@@ -625,9 +707,9 @@ export type GuardianUpdateWithoutBookingsInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUpdateManyWithoutPreferredByGuardiansNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutGuardianNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutGuardianNestedInput
 }
@@ -638,9 +720,9 @@ export type GuardianUncheckedUpdateWithoutBookingsInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedUpdateManyWithoutPreferredByGuardiansNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGuardianNestedInput
 }
 
@@ -649,9 +731,9 @@ export type GuardianCreateWithoutReviewsInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalCreateNestedManyWithoutPreferredByGuardiansInput
   bookings?: Prisma.BookingCreateNestedManyWithoutGuardianInput
   user: Prisma.UserCreateNestedOneWithoutGuardianInput
 }
@@ -662,9 +744,9 @@ export type GuardianUncheckedCreateWithoutReviewsInput = {
   age: number
   gender: string
   locality: string
-  preferredAreas?: Prisma.GuardianCreatepreferredAreasInput | string[]
   verificationStatus?: $Enums.VerificationStatus
   createdAt?: Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedCreateNestedManyWithoutPreferredByGuardiansInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuardianInput
 }
 
@@ -689,9 +771,9 @@ export type GuardianUpdateWithoutReviewsInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUpdateManyWithoutPreferredByGuardiansNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutGuardianNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutGuardianNestedInput
 }
@@ -702,10 +784,44 @@ export type GuardianUncheckedUpdateWithoutReviewsInput = {
   age?: Prisma.IntFieldUpdateOperationsInput | number
   gender?: Prisma.StringFieldUpdateOperationsInput | string
   locality?: Prisma.StringFieldUpdateOperationsInput | string
-  preferredAreas?: Prisma.GuardianUpdatepreferredAreasInput | string[]
   verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredHospitals?: Prisma.HospitalUncheckedUpdateManyWithoutPreferredByGuardiansNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutGuardianNestedInput
+}
+
+export type GuardianUpdateWithoutPreferredHospitalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  locality?: Prisma.StringFieldUpdateOperationsInput | string
+  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUpdateManyWithoutGuardianNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutGuardianNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutGuardianNestedInput
+}
+
+export type GuardianUncheckedUpdateWithoutPreferredHospitalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  locality?: Prisma.StringFieldUpdateOperationsInput | string
+  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGuardianNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutGuardianNestedInput
+}
+
+export type GuardianUncheckedUpdateManyWithoutPreferredHospitalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.StringFieldUpdateOperationsInput | string
+  locality?: Prisma.StringFieldUpdateOperationsInput | string
+  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -714,11 +830,13 @@ export type GuardianUncheckedUpdateWithoutReviewsInput = {
  */
 
 export type GuardianCountOutputType = {
+  preferredHospitals: number
   reviews: number
   bookings: number
 }
 
 export type GuardianCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  preferredHospitals?: boolean | GuardianCountOutputTypeCountPreferredHospitalsArgs
   reviews?: boolean | GuardianCountOutputTypeCountReviewsArgs
   bookings?: boolean | GuardianCountOutputTypeCountBookingsArgs
 }
@@ -731,6 +849,13 @@ export type GuardianCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the GuardianCountOutputType
    */
   select?: Prisma.GuardianCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * GuardianCountOutputType without action
+ */
+export type GuardianCountOutputTypeCountPreferredHospitalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HospitalWhereInput
 }
 
 /**
@@ -754,9 +879,9 @@ export type GuardianSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   age?: boolean
   gender?: boolean
   locality?: boolean
-  preferredAreas?: boolean
   verificationStatus?: boolean
   createdAt?: boolean
+  preferredHospitals?: boolean | Prisma.Guardian$preferredHospitalsArgs<ExtArgs>
   reviews?: boolean | Prisma.Guardian$reviewsArgs<ExtArgs>
   bookings?: boolean | Prisma.Guardian$bookingsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -769,7 +894,6 @@ export type GuardianSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   age?: boolean
   gender?: boolean
   locality?: boolean
-  preferredAreas?: boolean
   verificationStatus?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -781,7 +905,6 @@ export type GuardianSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   age?: boolean
   gender?: boolean
   locality?: boolean
-  preferredAreas?: boolean
   verificationStatus?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -793,13 +916,13 @@ export type GuardianSelectScalar = {
   age?: boolean
   gender?: boolean
   locality?: boolean
-  preferredAreas?: boolean
   verificationStatus?: boolean
   createdAt?: boolean
 }
 
-export type GuardianOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "age" | "gender" | "locality" | "preferredAreas" | "verificationStatus" | "createdAt", ExtArgs["result"]["guardian"]>
+export type GuardianOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "age" | "gender" | "locality" | "verificationStatus" | "createdAt", ExtArgs["result"]["guardian"]>
 export type GuardianInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  preferredHospitals?: boolean | Prisma.Guardian$preferredHospitalsArgs<ExtArgs>
   reviews?: boolean | Prisma.Guardian$reviewsArgs<ExtArgs>
   bookings?: boolean | Prisma.Guardian$bookingsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -815,6 +938,7 @@ export type GuardianIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $GuardianPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Guardian"
   objects: {
+    preferredHospitals: Prisma.$HospitalPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
@@ -825,7 +949,6 @@ export type $GuardianPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     age: number
     gender: string
     locality: string
-    preferredAreas: string[]
     verificationStatus: $Enums.VerificationStatus
     createdAt: Date
   }, ExtArgs["result"]["guardian"]>
@@ -1222,6 +1345,7 @@ readonly fields: GuardianFieldRefs;
  */
 export interface Prisma__GuardianClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  preferredHospitals<T extends Prisma.Guardian$preferredHospitalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Guardian$preferredHospitalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HospitalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Guardian$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Guardian$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.Guardian$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Guardian$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -1259,7 +1383,6 @@ export interface GuardianFieldRefs {
   readonly age: Prisma.FieldRef<"Guardian", 'Int'>
   readonly gender: Prisma.FieldRef<"Guardian", 'String'>
   readonly locality: Prisma.FieldRef<"Guardian", 'String'>
-  readonly preferredAreas: Prisma.FieldRef<"Guardian", 'String[]'>
   readonly verificationStatus: Prisma.FieldRef<"Guardian", 'VerificationStatus'>
   readonly createdAt: Prisma.FieldRef<"Guardian", 'DateTime'>
 }
@@ -1655,6 +1778,30 @@ export type GuardianDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Guardians to delete.
    */
   limit?: number
+}
+
+/**
+ * Guardian.preferredHospitals
+ */
+export type Guardian$preferredHospitalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Hospital
+   */
+  select?: Prisma.HospitalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Hospital
+   */
+  omit?: Prisma.HospitalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HospitalInclude<ExtArgs> | null
+  where?: Prisma.HospitalWhereInput
+  orderBy?: Prisma.HospitalOrderByWithRelationInput | Prisma.HospitalOrderByWithRelationInput[]
+  cursor?: Prisma.HospitalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HospitalScalarFieldEnum | Prisma.HospitalScalarFieldEnum[]
 }
 
 /**

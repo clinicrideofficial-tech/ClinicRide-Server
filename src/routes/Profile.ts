@@ -10,6 +10,26 @@ import { prisma } from "../lib/db";
 
 const router = Router();
 
+// Get list of all active hospitals
+router.get("/hospitals", async (req, res) => {
+  try {
+    const hospitals = await prisma.hospital.findMany({
+      where: { isActive: true },
+      select: {
+        id: true,
+        name: true,
+        city: true,
+        address: true,
+      },
+      orderBy: { name: "asc" },
+    });
+    return res.json({ hospitals });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to fetch hospitals" });
+  }
+});
+
 // Get current user profile with role-specific data
 router.get("/me", authMiddleware, async (req, res) => {
   try {
@@ -65,6 +85,7 @@ router.get("/me", authMiddleware, async (req, res) => {
       },
       profile: roleProfile,
       profileComplete,
+      token: req.token,
     });
   } catch (error) {
     console.error(error);
@@ -187,18 +208,27 @@ router.post("/guardian", authMiddleware, async (req, res) => {
       });
     }
 
-    const { age, gender, locality, preferredAreas } = result.data;
+    const { age, gender, locality, preferredHospitalIds } = result.data;
 
     // Upsert guardian profile
     const guardian = await prisma.guardian.upsert({
       where: { userId },
-      update: { age, gender, locality, preferredAreas },
+      update: { 
+        age, 
+        gender, 
+        locality, 
+        preferredHospitals: {
+          set: preferredHospitalIds.map(id => ({ id }))
+        }
+      },
       create: {
         userId,
         age,
         gender,
         locality,
-        preferredAreas,
+        preferredHospitals: {
+          connect: preferredHospitalIds.map(id => ({ id }))
+        }
       },
     });
 
@@ -318,13 +348,25 @@ router.post("/complete", authMiddleware, async (req, res) => {
           return res.status(400).json({ 
             error: "Validation failed", 
             details: result.error.flatten(),
-            expectedFields: ["age", "gender", "locality", "preferredAreas"]
+            expectedFields: ["age", "gender", "locality", "preferredHospitalIds"]
           });
         }
+        const { preferredHospitalIds, ...data } = result.data;
         const guardian = await prisma.guardian.upsert({
           where: { userId },
-          update: result.data,
-          create: { userId, ...result.data },
+          update: {
+            ...data,
+            preferredHospitals: {
+              set: preferredHospitalIds.map(id => ({ id }))
+            }
+          },
+          create: { 
+            userId, 
+            ...data,
+            preferredHospitals: {
+              connect: preferredHospitalIds.map(id => ({ id }))
+            }
+          },
         });
         return res.json({ message: "Guardian profile completed", profile: guardian });
       }

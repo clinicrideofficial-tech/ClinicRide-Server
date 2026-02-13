@@ -33,6 +33,11 @@ export type AuthAccount = Prisma.AuthAccountModel
  */
 export type Patient = Prisma.PatientModel
 /**
+ * Model Address
+ * 
+ */
+export type Address = Prisma.AddressModel
+/**
  * Model Guardian
  * 
  */
